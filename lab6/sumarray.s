@@ -27,19 +27,20 @@ push {ip, lr} @Used with pop at end of main, allowing program to end.
 ldr r4, =sum
 ldr r4, [r4]
 //counter is stored in r5
-ldr r6, =count
-str r5, [r6]
+ldr r5, =count
+ldr r5, [r5]
 
 loop:
-mov r6, #5
+mov r6, #5 /*This is the loop bounds*/
 ldr r0, =prompt
 bl puts
+
 ldr r1, =num
 ldr r0, =scan_format
 bl scanf
 
-ldr r7, =num
-ldr r1, [r7]
+ldr r1, =num
+ldr r1, [r1]
 add r4, r4, r1
 
 add r5, r5, #1
