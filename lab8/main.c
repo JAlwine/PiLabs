@@ -71,30 +71,66 @@ int main()
   /* Initialize the 2D array to the all zeroes (0.0) */
   /* Assign suitable values to all the elements of the structure and return the struct pointer */
 	if (rows > MAX_ROWS || columns > MAX_COLUMNS)
-		return null; 
+		return NULL; 
 	//Malloc storage for array info struct
-	array_info *ai;
-	ai = malloc(sizeof(array_info));
+	struct array_info *ai;
+	ai = malloc(sizeof(struct array_info));
 	//set values
 	ai->rows = rows;
 	ai->columns = columns;
 	ai->order = order;
 	//malloc space for matrix
-	char* tbl;
-	tbl = calloc(sizeof(char)*(rows*columns));
+	char* tbl = calloc(sizeof(float), (rows*columns));
 	ai->base_pointer = tbl;
 	}
  void store(struct array_info *array, int row_index, int column_index, float value)
  {
    /* Store the "value" to the location (row_index, column_index) of the array whose details are in struct pointer *array */
    /* Assume row-major order if "order"=0 and column-major order if "order"=1 */
- }
+	int offset = 0;
+
+	if (array->order == 0){
+	//store in row major order
+	offset = (row_index*array->columns) + column_index;
+	} 
+	else{
+	//store in column major order
+	offset = (column_index*array->rows) + row_index;
+	}
+float *base = (float*) array->base_pointer;
+	(index + offset) = value;
+
+}
 
  float fetch(struct array_info *array, int row_index, int column_index)
-  { 
-    /* Fetch the value from the location (row_index, column_index) of the array whose details are in struct pointer *array */
-    /* Assume row-major order if "order"=0 and column-major order if "order"=1 */
-    /* Return the fetched value */
-  }
+	  { 
+	    /* Fetch the value from the location (row_index, column_index) of the array whose details are in struct pointer *array */
+	    /* Assume row-major order if "order"=0 and column-major order if "order"=1 */
+	    /* Return the fetched value */
+  
+		if (array->order == 0){
+		//store in row major order
+		offset = (row_index*array->columns) + column_index;
+		}
+
+		else{
+		//store in column major order
+		offset = (column_index*array->rows) + row_index;
+		}
+return 3;	
+}
+
+ double calc_time_to_read(struct array_info* array)
+ {
+     clock_t begin, end;
+     long int i,j;
+     float value;
+     begin = clock();
+     /* Fetch back the whole array in the order 10, 20, 30, 40, 50, 60 assuming the 2x3 array given above irrespective of the order */
+     /* Do not print the values, just fetch them and keep discarding. */
+     /* We just need to evaluate the time to read from memory, not verifying the correctness of the content */
+     end = clock();
+     return (double)(end - begin)/CLOCKS_PER_SEC;
+ }
 }
 
