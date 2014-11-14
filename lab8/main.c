@@ -99,6 +99,7 @@ void store(struct array_info *array, int row_index, int column_index, float valu
 	//store in column major order
      offset = (column_index*array->rows) + row_index;
  }
+
  float *base = (float*) array->base_pointer;
  *(base + offset) = value;
 
@@ -119,7 +120,7 @@ float fetch(struct array_info *array, int row_index, int column_index)
 		//store in column major order
       offset = (column_index*array->rows) + row_index;
   }
-  return 3;	
+  return *((float*)array->base_pointer + offset);	
 }
 
 double calc_time_to_read(struct array_info* array)
