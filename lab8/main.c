@@ -93,11 +93,11 @@ void store(struct array_info *array, int row_index, int column_index, float valu
 
  if (array->order == 0){
 	//store in row major order
-     offset = (row_index*array->columns) + column_index;
+     offset = (column_index*array->columns) + row_index;
  } 
  else{
 	//store in column major order
-     offset = (column_index*array->rows) + row_index;
+     offset = (row_index*array->rows) + column_index;
  }
 
  float *base = (float*) array->base_pointer;
@@ -113,12 +113,12 @@ float fetch(struct array_info *array, int row_index, int column_index)
 	int offset = 0;
   if (array->order == 0){
 		//store in row major order
-      offset = (row_index*array->columns) + column_index;
+      offset = (column_index*array->columns) + row_index;
   }
 
   else{
 		//store in column major order
-      offset = (column_index*array->rows) + row_index;
+      offset = (row_index*array->rows) + column_index;
   }
   return *((float*)array->base_pointer + offset);	
 }
@@ -128,10 +128,29 @@ double calc_time_to_read(struct array_info* array)
  clock_t begin, end;
  long int i,j;
  float value;
+ int offset;
+
  begin = clock();
      /* Fetch back the whole array in the order 10, 20, 30, 40, 50, 60 assuming the 2x3 array given above irrespective of the order */
      /* Do not print the values, just fetch them and keep discarding. */
      /* We just need to evaluate the time to read from memory, not verifying the correctness of the content */
+if (array->order == 0){ 
+for (i=0; i < array->columns; i++){
+	for (j=0; j < array->rows; j++){
+		offset = (i*array->columns)+j;
+		value = *((float*)array->base_pointer + offset);
+		}
+	}
+}
+
+else {
+for (i=0; i < (array->rows); i++){
+	for (j=0; j < (array->columns); j++){ 
+		offset = (j*array->columns) + i;
+		value = *((float*)array->base_pointer + offset);
+		}
+	}
+}
  end = clock();
  return (double)(end - begin)/CLOCKS_PER_SEC;
 }
