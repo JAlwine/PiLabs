@@ -23,8 +23,12 @@ main:                                   # This is called by C library's startup 
 	mov %rsp, %r12
 
 	add $8, %rsp
-	push %r12
 
+	#Print out the contents of r12
+	mov $input, %rdi
+	mov (%r12), %rsi
+	mov $0, %rax
+	call printf
 
         #load message 2 into rdi and print
 	mov  $message2, %rdi
@@ -33,7 +37,7 @@ main:                                   # This is called by C library's startup 
 	#Move input format into rdi and scan input
 	mov  $input, %rdi
 	#Allocate space on the stack for 2nd var
-	sub $8, %rsp
+	sub $4, %rsp
 	#Move this var into rsi to be used by scanf
 	mov %rsp, %rsi
 	mov $0, %rax
@@ -41,13 +45,14 @@ main:                                   # This is called by C library's startup 
 	#store result into register 13
 	mov %rsp, %r13
 
-	add $8, %rsp
+	add $4, %rsp
 	#restore the stack pointer
 	#Dereference values and store them in registers
 	
-	pop %r12
-	mov (%r12) , %r12
+	
+	mov (%r12), %r12
 	mov (%r13), %r13
+
 
 	cmp %r12, %r13
 	jl less
